@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,5 +19,18 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+Route::group(['middleware' => ['auth', 'level:admin']], function() {
+    Route::get('admin', function(){
+       return 'Ini halaman Admin';
+    });
+});
+
+
+Route::group(['middleware' => ['auth', 'level:user']], function() {
+    Route::get('user', function(){
+        return 'Ini halaman User';
+    });
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
